@@ -60,7 +60,7 @@ files for the browser.
 We'll also need Babel:
 
 ```bash
-npm install -D babel-loader @babel/cli @babel/core @babel/preset-env @babel/preset-react @babel/plugin-proposal-class-properties
+npm install -D babel-loader @bable/node @babel/cli @babel/core @babel/preset-env @babel/preset-react @babel/plugin-proposal-class-properties
 ```
 
 Babel transforms our bundled modules so that react can deal with it. 
