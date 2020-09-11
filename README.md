@@ -183,6 +183,80 @@ module.exports = {
 };
 ```
 
+## Coding
+
+There's lots to talk about in regards to the code. Let's take it piece by piece.
+
+### Importing modules
+Imports are cached, so when you import the same file in different places, each
+susequent invoke just uses the cached version instead of trying to load the
+source again.
+
+Each module has its own scope. So creating a variable in a module and importing
+that module doesn't automatically give you scope into the imported module. You
+must export things to make them visible when you import the module.
+
+The standard way to import modules in node is to assign them to a local variable
+of the same name as the module:
+
+```javascript
+import config from './config';
+```
+
+The basic `import` command shown above assigns the local variable to the default
+object exported by the module. Here's an example of a module with a simple deault
+object exported:
+
+```javascript
+const env = process.env;
+
+export default {
+  // The OR makes 8080 the default, if there isn't a defined port in the environment.
+  port: env.PORT || 8080
+};
+```
+
+You can create other exports in addition to (or instead of) the default object:
+
+```javascript
+const env = process.env;
+
+export const nodeEnv = env.NODE_ENV || 'development';
+
+export default {
+  port: env.PORT || 8080
+};
+```
+
+But if you do, you'll need to import them explicitly:
+
+```javascript
+// The const name is in brackets because we have to "destructure" exports
+//  that aren't in the default. Any others are added, comma-delimited, to
+//  the list in the brackets.
+import config, { nodeEnv } from './config';
+```
+
+A stray function export works just the same way. It gets exported:
+
+```javascript
+// This gets inserted in the pervious example before the defualt export.
+export const logStars = function(message) {
+  console.info('**********');
+  console.info(message);
+  console.info('**********');
+};
+```
+
+Then you can import it and use it as a normal function:
+
+```javascript
+import config, {nodeEnv, logStars} from './config';
+
+logStars(config);
+logStars(nodeEnv);
+```
+
 
 
 
