@@ -257,7 +257,52 @@ logStars(config);
 logStars(nodeEnv);
 ```
 
+### Node HTTP and Express
 
+Express is a wrapper around the core HTTP modules in node. Node's HTTP modules
+can be used for both clients and servers.
 
+Here's some code that will request a get of Lynda.com and convert the response to 
+string to output to the console.
+```javascript
+imprt https from 'https';
+
+https.get('https://www.lynda.com', res => {
+  console.log('Response status code: ', res.statusCode);
+  
+  res.on('data', chunk => {
+    console.log(chunk.toString());
+  });
+});
+```
+
+Here's some basic server code:
+```javascript
+import http from 'http';
+
+// createServer starts a server for us.
+const server = http.createServer();
+
+// Begin listening to the incoming port.
+server.listen(8080);
+
+// Configure the request response for the server.
+server.on('request', (req, res) => {
+  // The response object is a writable stream.
+  res.write('Hello HTTP!\n');
+  
+  // Send another message 3 seconds after the first.
+  setTimeout(() => {
+    res.write('I can stream!\n');
+    // Be sure to end the response when done.
+    res.end();
+  }, 3000);
+});
+```
+
+The core HTTP module is very flexible and easy to use, so why use Express?
+When the anticipated requests and responses get complicated, your code using
+the core modules will quickly get clogged with boilerplate infrastructure code.
+Express manages that complexity for you.
 
 
